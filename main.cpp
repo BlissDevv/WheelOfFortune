@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <limits>
 
 struct Player {
     std::string name;
@@ -16,7 +17,7 @@ void displayPlayers(const std::vector<Player>& players) {
         
         playerNumber++;
     }
-    std::cout << "Players: " <<players.size() << "\n";
+    //std::cout << "Players: " <<players.size() << "\n";
 }
 
 int getPlayerCount(const std::vector<Player>& players) {
@@ -25,7 +26,29 @@ int getPlayerCount(const std::vector<Player>& players) {
 
 int main() {
     std::cout << "Welcome to Wheel of Fortune! \n";
-    int roundNumber = 5;
+
+    int roundNumber;
+
+    std::cout << "Enter number of rounds: " << "\n";
+
+    while(true) {
+        std::cin >> roundNumber;
+
+        if (std::cin.fail()) {
+        std::cout << "Input must be a number! Try again: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        continue;
+        }
+
+        if (roundNumber < 1 || roundNumber > 10) {
+            std::cout << "Invalid value. Try again: ";
+            continue;
+         } 
+         std::cout << "Valid number of rounds!\n";
+
+        break;
+    }
 
     std::cout << "Number of rounds: " << roundNumber << "\n";
 
