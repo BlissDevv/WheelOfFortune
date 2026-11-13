@@ -52,14 +52,44 @@ int main() {
 
     std::cout << "Number of rounds: " << roundNumber << "\n";
 
-    std::vector<Player> players;
+    int playerCount;
+
+    std::cout << "Enter number of players (1-3): ";
     
-    players.push_back({"Alex", 500});
-    players.push_back({"John", 300});
+    while(true) {
+        std::cin >> playerCount;
+
+        if (std::cin.fail()) {
+            std::cout << "Input must be a number! Try again: ";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+
+        if (playerCount < 1 || playerCount > 3) {
+            std::cout << "Invalid value. Try again: ";
+            continue;
+        }
+
+        std::cout << "Valid number of players!\n";
+
+        break;
+    }
+
+    std::cout << "Number of players: " << playerCount << "\n";
+
+    std::vector<Player> players;
+
+    for (int i = 0; i < playerCount; i++) {
+        std::cout << "Enter name for Player " << i + 1 << ": ";
+        
+        std::string name;
+        std::cin >> name;
+
+        players.push_back({name, 0});
+    }
 
     displayPlayers(players);
-    int playerCount = getPlayerCount(players);
-    std::cout << "Number of players: " << playerCount << "\n";
     
     return 0;
 }
