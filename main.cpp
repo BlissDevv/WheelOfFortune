@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <map>
+#include <random>
 
 struct Player {
     std::string name;
@@ -90,6 +92,64 @@ int main() {
     }
 
     displayPlayers(players);
-    
+
+    std::map<std::string, std::vector<std::string>> categories;
+
+    categories["FOOD"] = {"PIZZA", "BURGER", "FRENCH FRIES", "CHOCOLATE CAKE", "ICE CREAM"};
+    categories["ANIMALS"] = {"DOG", "CAT", "SNAKE", "POLAR BEAR", "CROCODILE"};
+    categories["COUNTRIES"] = {"POLAND", "GERMANY", "USA", "SOUTH KOREA", "NEW ZEALAND"};
+
+    //for (const auto& category : categories) {
+        //"Map key"
+        //std::cout << "Category: " << category.first << "\n";
+       // for (const std::string& phrase : category.second) {
+       //     std::cout << phrase << "\n";
+       // }
+
+       // std::cout << "\n";
+    //}
+
+    std::vector<std::string> categoryNames;
+    for (const auto& category : categories) {
+        categoryNames.push_back(category.first);
+    }
+
+    std::cout << "Available categories:\n";
+    for (const std::string& name : categoryNames) {
+        std::cout << name << "\n";
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_int_distribution<int> categoryDistribution(
+        0,
+        static_cast<int>(categoryNames.size()) - 1
+    );
+    int randomCategoryIndex = categoryDistribution(gen);
+    std::string randomCategory = categoryNames[randomCategoryIndex];
+
+    std::uniform_int_distribution<int> phraseDistribution(
+        0,
+        static_cast<int>(categories[randomCategory].size()) - 1
+    );
+
+    int randomPhraseIndex = phraseDistribution(gen);
+
+    std::string randomPhrase = categories[randomCategory][randomPhraseIndex];
+
+    std::cout << "Random category: " << randomCategory << "\n";
+    std::cout << "Random phrase: " << randomPhrase << "\n";
+
+    categories[randomCategory].erase(
+        categories[randomCategory].begin() + randomPhraseIndex
+    );
+
+    for (const std::string& phrase : categories[randomCategory]) {
+        std::cout << phrase << "\n";
+    }
+
+    std::cout << "Remaining phrases in " << randomCategory << ": " << categories[randomCategory].size() << "\n";
+
     return 0;
 }
