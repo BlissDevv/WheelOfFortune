@@ -7,6 +7,18 @@ struct Player {
     int score;
 };
 
+void displayPlayers(const std::vector<Player>& players) {
+    int playerNumber = 1;
+    for (const Player& player : players) {
+        std::cout << "Player " << playerNumber << " name: " << player.name << "\n";
+        std::cout << "Player " << playerNumber << " score: " << player.score << "\n";
+
+        
+        playerNumber++;
+    }
+    std::cout << "Players: " <<players.size() << "\n";
+}
+
 int main() {
     std::cout << "Welcome to Wheel of Fortune! \n";
     int roundNumber = 5;
@@ -17,15 +29,8 @@ int main() {
     
     players.push_back({"Alex", 500});
     players.push_back({"John", 300});
-    
-    int playerNumber = 1;
-    for (const Player& player : players) {
-        std::cout << "Player " << playerNumber << " name: " << player.name << "\n";
-        std::cout << "Player " << playerNumber << " score: " << player.score << "\n";
-        playerNumber++;
-    }
-    
-    std::cout << "Players: " <<players.size() << "\n";
+
+    displayPlayers(players);
     
     return 0;
 }
