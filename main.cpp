@@ -19,6 +19,10 @@ void displayPlayers(const std::vector<Player>& players) {
     std::cout << "Players: " <<players.size() << "\n";
 }
 
+int getPlayerCount(const std::vector<Player>& players) {
+    return players.size();
+}
+
 int main() {
     std::cout << "Welcome to Wheel of Fortune! \n";
     int roundNumber = 5;
@@ -31,6 +35,8 @@ int main() {
     players.push_back({"John", 300});
 
     displayPlayers(players);
+    int playerCount = getPlayerCount(players);
+    std::cout << "Number of players: " << playerCount << "\n";
     
     return 0;
 }
