@@ -122,34 +122,90 @@ int main() {
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    std::uniform_int_distribution<int> categoryDistribution(
-        0,
-        static_cast<int>(categoryNames.size()) - 1
-    );
-    int randomCategoryIndex = categoryDistribution(gen);
-    std::string randomCategory = categoryNames[randomCategoryIndex];
+    for (int i = 0; i < roundNumber; i++) {
+        std::cout << "Round " << i + 1 << "\n";
+    
 
-    std::uniform_int_distribution<int> phraseDistribution(
-        0,
-        static_cast<int>(categories[randomCategory].size()) - 1
-    );
+        std::uniform_int_distribution<int> categoryDistribution(
+            0,
+            static_cast<int>(categoryNames.size()) - 1
+        );
+        int randomCategoryIndex = categoryDistribution(gen);
+        std::string randomCategory = categoryNames[randomCategoryIndex];
 
-    int randomPhraseIndex = phraseDistribution(gen);
+        std::uniform_int_distribution<int> phraseDistribution(
+            0,
+            static_cast<int>(categories[randomCategory].size()) - 1
+        );
 
-    std::string randomPhrase = categories[randomCategory][randomPhraseIndex];
+        int randomPhraseIndex = phraseDistribution(gen);
 
-    std::cout << "Random category: " << randomCategory << "\n";
-    std::cout << "Random phrase: " << randomPhrase << "\n";
+        std::string randomPhrase = categories[randomCategory][randomPhraseIndex];
+        //randomPhrase = "PIZZA";
+        std::vector<char> hiddenPhrase;
 
-    categories[randomCategory].erase(
-        categories[randomCategory].begin() + randomPhraseIndex
-    );
+        for (size_t i = 0; i < randomPhrase.size(); i++) {
+            if (randomPhrase[i] == ' ') {
+                hiddenPhrase.push_back(' ');
+            } else {
+                hiddenPhrase.push_back('_');
+            }
+        }
 
-    for (const std::string& phrase : categories[randomCategory]) {
-        std::cout << phrase << "\n";
+        std::cout << "Random category: " << randomCategory << "\n";
+        std::cout << "Random phrase: " << randomPhrase << "\n";
+        std::cout << "Hidden phrase: ";
+
+
+        for (size_t i = 0; i < hiddenPhrase.size(); i++) {
+            std::cout << hiddenPhrase[i] << " ";
+        }
+        std::cout << "\n";
+
+        categories[randomCategory].erase(
+            categories[randomCategory].begin() + randomPhraseIndex
+        );
+
+        char guessedLetter = 'A';
+        std::cout << "Guessed letter: " << guessedLetter << "\n";
+
+        bool letterFound = false;
+        int letterCount = 0; 
+
+        int letterValue = 200;
+
+        for (size_t i = 0; i < randomPhrase.size(); i++) {
+            if (randomPhrase[i] == guessedLetter) {
+                hiddenPhrase[i] = guessedLetter;
+                letterFound = true;
+                letterCount++;
+            } 
+        }
+        
+        if (letterFound) {
+            std::cout << "Letter found!\n";
+            std::cout << "Updated phrase: ";
+            for (size_t i = 0; i < hiddenPhrase.size(); i++) {
+                std::cout << hiddenPhrase[i] << " ";   
+            }
+            std::cout << "\n";
+
+            int pointsEarned = letterValue * letterCount;
+            std::cout << "Points earned: " << pointsEarned << "\n";
+            players[0].score += pointsEarned;
+        } else {
+            std::cout << "Letter not found!\n";
+            std::cout << "Updated phrase: ";
+            for (size_t i = 0; i < hiddenPhrase.size(); i++) {
+                std::cout << hiddenPhrase[i] << " ";
+            }
+            std::cout << "\n";
+        }
+        std::cout << "Letter Counter: " << letterCount << "\n";
+        std::cout << "Player 1 score: " << players[0].score << "\n";
+
+
+        std::cout << "Remaining phrases in " << randomCategory << ": " << categories[randomCategory].size() << "\n";
     }
-
-    std::cout << "Remaining phrases in " << randomCategory << ": " << categories[randomCategory].size() << "\n";
-
     return 0;
 }
